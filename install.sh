@@ -1,5 +1,15 @@
 #!/bin/bash
 
+# Check if install_logs directory exists
+directory="install_logs"
+if [ ! -d "$directory" ]; then
+    # If it doesn't exist, create it
+    mkdir -p "$directory"
+    echo "Directory $directory created."
+else 
+    echo "Directory $directory already exists."
+fi
+
 echo "Starting migration script..."
 docker compose up -d db > install_logs/db_start.log 2>&1
 echo "Database service started."
