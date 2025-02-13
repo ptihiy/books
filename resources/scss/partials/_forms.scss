@@ -1,0 +1,39 @@
+@use 'colors';
+
+button {
+    border: none;
+    padding: .5rem 1rem;
+    background-color: colors.$header-background-color;
+    color: #fff;
+    cursor: pointer;
+    border-radius: 2px;
+
+    &.outline {
+        background-color: transparent;
+        border: 1px solid colors.$button-outline-color;
+        color: colors.$button-outline-color;
+    }
+}
+
+.form {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+
+    .form-group {
+        display: flex;
+        flex-direction: column;
+        gap: .5rem;
+
+        input[type="text"] {
+            border: 1px solid colors.$placeholder-border-color;
+            border-radius: 2px;
+            padding: .5rem;
+            background-color: transparent;
+
+            &.is-invalid {
+                border-color: colors.$input-is-invalid-border-color;
+            }
+        }
+    }
+}

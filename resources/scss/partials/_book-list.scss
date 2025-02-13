@@ -1,0 +1,65 @@
+@use 'colors';
+
+.book-list {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+
+    @media (min-width: 768px) {
+        padding: 1rem;
+        flex-direction: row;
+        flex-wrap: wrap;
+        max-width: 100%;
+        margin: 0 auto;
+        background-color: colors.$list-background-color;
+    }
+
+    .book {
+        display: flex;
+        position: relative;
+        gap: 1rem;
+
+        @media (min-width: 768px) {
+            width: calc(50% - .5rem);
+        }
+    
+        .cover {
+            width: calc(50% - .5rem);
+            max-width: 225px;
+    
+            img,
+            .placeholder {
+                aspect-ratio: 3 / 4;
+                max-width: 100%;
+                height: auto;
+            }
+
+            img {
+                object-fit: cover;
+            }
+
+            .placeholder {
+                border: 2px dashed colors.$placeholder-border-color;
+                display: flex;
+                text-align: center;
+                align-items: center;
+            }
+        }
+
+        .title {
+            h3 {
+                font-size: 1.5rem;
+                margin-bottom: .75rem;
+            }
+        }
+
+        .actions {
+            position: absolute;
+            bottom: 0rem;
+            right: 1rem;
+            background: colors.$button-group-background-color;
+            padding: .5rem;
+            border-radius: 5px;
+        }
+    }
+}

@@ -1,0 +1,51 @@
+services:
+  # PHP Service
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    volumes:
+      - .:/var/www/html
+    environment:
+      - DB_CONNECTION=mysql
+      - DB_HOST=db
+      - DB_PORT=3306
+      - DB_DATABASE=laravel
+      - DB_USERNAME=root
+      - DB_PASSWORD=your_password_here
+    networks:
+      - laravel
+
+  # Nginx Service
+  webserver:
+    image: nginx:alpine
+    ports:
+      - "8050:80"
+    volumes:
+      - .:/var/www/html
+      - ./nginx:/etc/nginx/conf.d
+    depends_on:
+      - app
+    networks:
+      - laravel
+
+  # MySQL Service
+  db:
+    image: mysql:8.0
+    ports:
+      - "3307:3306"
+    environment:
+      MYSQL_DATABASE: laravel
+      MYSQL_ROOT_PASSWORD: your_password_here
+    volumes:
+      - dbdata:/var/lib/mysql
+    networks:
+      - laravel
+
+# Volumes
+volumes:
+  dbdata:
+
+# Networks
+networks:
+  laravel:
