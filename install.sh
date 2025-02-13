@@ -32,4 +32,4 @@ echo "App key generated."
 docker compose up -d webserver > install_logs/webserver_start.log 2>&1
 echo "Webserver service started."
 
-echo "Check logs for detailed output:"
+echo "Your program is running at http://localhost:8050"

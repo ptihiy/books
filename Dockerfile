@@ -8,7 +8,9 @@ RUN apt-get update && apt-get install -y \
     libonig-dev \
     libxml2-dev \
     zip \
-    unzip
+    unzip \
+    nodejs \
+    npm
 
 # Clear cache
 RUN apt-get clean && rm -rf /var/lib/apt/lists/*
@@ -25,8 +27,14 @@ WORKDIR /var/www/html
 # Copy existing application directory contents
 COPY . /var/www/html
 
-# Install all PHP dependencies
-RUN composer install
+# Install PHP dependencies
+RUN composer install --no-dev --optimize-autoloader
+
+# Install Node.js dependencies
+RUN npm install
+
+# Build the frontend with Vite
+RUN npm run build
 
 # Change ownership of our applications
 RUN chown -R www-data:www-data /var/www/html
