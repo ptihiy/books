@@ -21,23 +21,37 @@ RUN docker-php-ext-install pdo_mysql mbstring exif pcntl bcmath gd
 # Get latest Composer
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
-# Set working directory
-WORKDIR /var/www/html
-
 # Copy existing application directory contents
 COPY . /var/www/html
 
+# Ensure directories have correct ownership
+RUN chown -R www-data:www-data /var/www/html
+
+# Set working directory
+WORKDIR /var/www/html
+
+# Switch to the www-data user before running Composer and npm
+USER www-data
+
+# Copy .env file
+COPY .env.example .env
+
 # Install PHP dependencies
-RUN composer install --no-dev --optimize-autoloader
+RUN COMPOSER_CACHE_DIR=/var/www/html/.cache/composer composer install
 
 # Install Node.js dependencies
-RUN npm install
+RUN npm install --cache /var/www/html/.cache/npm
 
 # Build the frontend with Vite
 RUN npm run build
 
-# Change ownership of our applications
-RUN chown -R www-data:www-data /var/www/html
+USER root
+
+# Set app key
+RUN php artisan key:generate
+
+# Create storage link
+RUN php artisan storage:link
 
 # Start php-fpm server
 CMD ["php-fpm"]

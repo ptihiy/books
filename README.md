@@ -6,4 +6,7 @@
 
 ## Установка
 
-После клонирования запустить ./install.sh (убедиться, что файл исполняемый). После сборки сайт будет доступен по адресу localhost:8050 (по умолчанию)
+docker compose up -d
+docker compose exec app php artisan migrate --seed
+
+Сайт будет доступен по адресу http://localhost:8050
