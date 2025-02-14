@@ -9,7 +9,6 @@ services:
       dockerfile: Dockerfile
     volumes:
       - ./app:/var/www/html/app
-      - ./public:/var/www/html/public
       - ./resources:/var/www/html/resources
       - ./routes:/var/www/html/routes
       - ./database:/var/www/html/database

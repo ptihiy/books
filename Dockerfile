@@ -37,14 +37,20 @@ COPY --chown=www-data:www-data . /var/www/html
 # Copy .env file
 COPY .env.example .env
 
+# Ensure directories exist and have the correct permissions
+RUN mkdir -p /var/www/html/public/build && chown -R www-data:www-data /var/www/html/public
+
 # Install PHP dependencies
 RUN COMPOSER_CACHE_DIR=/var/www/html/.cache/composer composer install
 
 # Install Node.js dependencies
 RUN npm install --cache /var/www/html/.cache/npm
 
-# Build the frontend with Vite
-RUN npm run build
+# Ensure node_modules has correct permissions
+RUN chown -R www-data:www-data /var/www/html/node_modules
+
+# Copy Vite config with
+COPY --chown=www-data:www-data ./vite.config.js /var/www/html/vite.config.js
 
 # Set app key
 RUN php artisan key:generate
@@ -52,8 +58,13 @@ RUN php artisan key:generate
 # Create storage link
 RUN php artisan storage:link
 
+RUN chown -R www-data:www-data /var/www/html/public/build
+
 # Switch to user
 USER www-data
+
+# Build the frontend with Vite
+RUN npm run build
 
 # Start php-fpm server
 CMD ["php-fpm"]
