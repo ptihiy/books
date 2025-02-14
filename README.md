@@ -6,7 +6,9 @@
 
 ## Установка
 
+```bash
 docker compose up -d
 docker compose exec app php artisan migrate --seed
+```
 
 Сайт будет доступен по адресу http://localhost:8050

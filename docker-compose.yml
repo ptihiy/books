@@ -3,9 +3,17 @@ services:
   app:
     build:
       context: .
+      args:
+        USER_ID: ${USER_ID:-1000}
+        GROUP_ID: ${GROUP_ID:-1000}
       dockerfile: Dockerfile
     volumes:
-      - .:/var/www/html
+      - ./app:/var/www/html/app
+      - ./public:/var/www/html/public
+      - ./resources:/var/www/html/resources
+      - ./routes:/var/www/html/routes
+      - ./database:/var/www/html/database
+      - ./config:/var/www/html/config
     environment:
       - DB_CONNECTION=mysql
       - DB_HOST=db
@@ -23,7 +31,7 @@ services:
       - "8050:80"
     volumes:
       - .:/var/www/html
-      - ./nginx:/etc/nginx/conf.d
+      - ./nginx:/etc/nginx/conf.d:ro
     depends_on:
       - app
     networks:
